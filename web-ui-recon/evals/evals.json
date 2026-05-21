@@ -1,0 +1,36 @@
+{
+  "skill_name": "web-ui-recon",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "分析 /root/projects/tmp11/web-ui-recon/evals/files/react-admin-dashboard 目录下的前端源码，进行完整的安全侦察",
+      "expected_output": "一份包含技术概览、功能模块、输入元素、API映射、高危操作识别的完整安全侦察报告",
+      "files": [],
+      "expectations": [
+        "报告包含了技术概览（React + TypeScript + Axios + Ant Design）",
+        "报告识别出了文件上传/下载/删除功能并标注为高危",
+        "报告识别出了用户管理中的删除和批量删除操作",
+        "报告包含了ASCII布局描述的界面输入元素",
+        "报告建立了API参数到界面输入元素的追溯映射",
+        "报告识别出了系统配置页中的SSRF风险（webhook_url, storage_endpoint）",
+        "报告识别出了SMTP协议可配置为非加密的风险",
+        "报告包含安全测试优先级建议",
+        "报告识别出了.env文件中的API base URL配置"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "快速分析 /root/projects/tmp11/web-ui-recon/evals/files/react-admin-dashboard/src/pages/Settings 目录下的前端代码",
+      "expected_output": "针对系统配置页面的安全侦察报告，聚焦高危配置项和SSRF风险",
+      "files": [],
+      "expectations": [
+        "报告识别出了站点URL配置项及其SSRF风险",
+        "报告识别出了存储Endpoint配置及其SSRF风险",
+        "报告识别出了Webhook URL配置及其SSRF风险",
+        "报告识别出了Access Key/Secret Key等凭据输入",
+        "报告识别出了SMTP加密协议可配置的风险",
+        "报告包含ASCII布局描述了设置页面的输入元素"
+      ]
+    }
+  ]
+}
