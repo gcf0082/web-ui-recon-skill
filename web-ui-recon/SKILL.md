@@ -121,7 +121,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 │                                 │
 │  [x] 勾选项                      │  【可输入】 checkbox  name="agree"
 │                                 │
-│  [ 按钮A ]  [ 删除 ]            │  【可点击】 button  onClick={handleDelete}  ← 🔴 高危
+│  [ 按钮A ]  [ 删除 ]            │  【可点击】 button  onClick={handleDelete}
 └─────────────────────────────────┘
 ```
 
@@ -136,13 +136,12 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 5. 检查是否存在二次认证（2FA）相关输入元素（如 TOTP 输入框、短信验证码、生物识别等），记录其触发条件和类型
 6. 记录隐藏字段、CSRF token、disabled 字段
 7. **错误处理与输入约束分析**：对每个输入元素和表单，收集其关联的错误处理逻辑：
-   - **校验规则提取**：从 `rules`、`validators`、`pattern`、`minLength`/`maxLength` 等前端校验规则中提取输入约束条件（如"密码至少 8 位且包含大小写字母"），**这些约束直接反映了后端的输入预期，对构造测试 payload 至关重要**
+   - **校验规则提取**：从 `rules`、`validators`、`pattern`、`minLength`/`maxLength` 等前端校验规则中提取输入约束条件（如"密码至少 8 位且包含大小写字母"）
    - **错误信息收集**：记录所有 `message.error()`、`message.warning()`、表单校验错误提示、API 错误处理中的错误文案。注意区分：
-     - 通用错误（"操作失败"、"系统错误"）— 信息量少但安全
-     - 具体错误（"用户名已存在"、"密码错误"）— 可能存在用户枚举风险
+     - 通用错误（"操作失败"、"系统错误"）
+     - 具体错误（"用户名已存在"、"密码错误"）
    - **错误反馈方式**：标注错误是通过什么机制展示给用户的（Ant Design `message.error` / 行内校验提示 / `alert` / 自定义弹窗 / 静默失败）
-   - **敏感信息泄露**：检查错误处理中是否可能泄露敏感信息（如堆栈信息、SQL 片段、文件路径、Token 片段等）
-   - **API 错误透传**：检查前端是否直接将后端错误信息展示给用户（如 `catch(error => message.error(error.response.data.message))`），这可能泄露后端实现细节
+   - **API 错误透传**：检查前端是否直接将后端错误信息展示给用户（如 `catch(error => message.error(error.response.data.message))`）
 
 **输出**：按页面组织的界面输入元素清单，包含 ASCII 布局描述
 
@@ -189,30 +188,30 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
        → POST /api/users/batch-delete {ids: [...]}
        → 后端删除操作
    ```
-2. 标注每个调用链的安全关注点
+2. 标注每个调用链中的关键参数和操作类型
 
 **输出**：树状业务功能-API 映射图
 
 ---
 
-### 阶段 6：高危操作与安全分析
+### 阶段 6：功能与配置汇总
 
-**目标**：基于前 5 阶段的分析和安全分析标准，输出完整的安全评估
+**目标**：基于前 5 阶段的分析，汇总值得关注的功能点和配置项
 
 **操作**：
-1. 读取参考文档 `references/security-analysis-criteria.md` 中的分析维度
-2. 逐条对扫描结果应用分析标准
-3. 生成**高危操作清单**，包含：
-   - 操作名称和所在页面
-   - 对应的 API 调用
-   - 风险等级（🔴 严重 / 🟠 高危 / 🟡 中危 / 🔵 低危）
-   - 风险说明
-   - 建议的测试方法
+1. 读取参考文档 `references/security-analysis-criteria.md` 中的观察清单
+2. 逐条对照代码，记录发现的事实：
+   - 哪些功能操作存在（上传、删除、权限变更、动态执行等）
+   - 哪些输入校验规则存在
+   - 哪些敏感信息输入存在（密码、凭据、PII）
+   - 哪些 URL/地址可配置
+   - 哪些协议配置项可配
+   - 错误处理中的校验规则和错误文案
+3. 只陈述事实，不评判风险高低，不给出测试建议
 
 **输出**：
-- 高危操作清单（按风险等级排序）
-- 逐维度的安全分析
-- 安全测试优先级建议
+- 功能操作事实清单
+- 各项配置事实清单
 
 ---
 
@@ -232,10 +231,8 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 ## 3. 界面输入元素清单
 ## 4. API 端点与参数 → 输入元素映射
 ## 5. 业务功能-API 映射（quick 模式可跳过）
-## 6. 高危操作与安全分析
-### 6.1 高危功能识别
-### {按 criteria 逐条扩展}
-## 7. 安全测试建议
+## 6. 功能与配置汇总
+## 7. 错误处理与输入约束
 ```
 
 ## 安全分析参考标准
