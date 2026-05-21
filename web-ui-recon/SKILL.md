@@ -147,7 +147,12 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
    - 请求路径（含动态参数，如 `/api/users/:id`）
    - 请求参数和请求体结构
    - 鉴权方式（是否有 `Authorization` header）
-   - **每个参数对应的界面输入元素来源**
+   - **每个参数对应的界面输入元素来源**，并区分参数在请求中的位置：
+     - `Body` — JSON 请求体中的字段
+     - `Query` — URL 查询参数
+     - `Path` — URL 路径参数（如 `:id`）
+     - `FormData` — 文件上传等表单数据
+     - `Headers` — 自定义请求头
 3. 对于文件上传 API，额外关注：
    - 上传前是否有**签名/凭证**获取请求（如先请求 `GET /api/upload/token` 获取 STS 或 Presigned URL，再执行上传）
    - 前端 `accept` 属性限制的文件类型
@@ -157,7 +162,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
    界面输入元素 → state/变量 → 函数参数 → API 调用参数
    ```
 
-**输出**：API 端点表格（编号 | 方法 | 端点 | 参数 | 参数来源界面元素 | 鉴权 | 上传签名），后续章节用 `[E{n}]` 引用端点
+**输出**：每个端点一段自然语言描述，包含方法、路径、请求结构（Body/Query/Path/FormData 中的参数）、参数来源界面元素、鉴权方式。后续章节用 `[E{n}]` 引用端点
 
 ---
 
