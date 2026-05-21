@@ -111,7 +111,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 
 4. 特别关注下拉框（`<select>`、`Select` 组件）的数据来源：
    - 如果 `options` 是硬编码的静态数据，标注为 `[静态选项]`
-   - 如果选项通过 API 请求动态获取（如 `useEffect → fetch('/api/xxx') → setOptions(data)`），**必须标注为 `[异步加载: GET /api/xxx]`**，并记录 API 端点
+   - 如果选项通过 API 请求动态获取（如 `useEffect → fetch('/api/xxx') → setOptions(data)`），**必须标注为 `[异步: E{n}]`**（`E{n}` 对应 §3 的端点编号），并记录 API 端点
 5. 检查是否存在二次认证（2FA）相关输入元素（如 TOTP 输入框、短信验证码、生物识别等），记录其触发条件和类型
 6. 记录隐藏字段、CSRF token、disabled 字段
 7. **错误处理与输入约束分析**：对每个输入元素和表单，收集其关联的错误处理逻辑：
@@ -152,7 +152,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
    界面输入元素 → state/变量 → 函数参数 → API 调用参数
    ```
 
-**输出**：API 端点表格（方法 | 端点 | 参数 | 参数来源界面元素 | 鉴权 | 风险标注）
+**输出**：API 端点表格（编号 | 方法 | 端点 | 参数 | 参数来源界面元素 | 鉴权 | 上传签名），后续章节用 `[E{n}]` 引用端点
 
 ---
 
