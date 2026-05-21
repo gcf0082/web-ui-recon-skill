@@ -41,34 +41,14 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
    ls <path>/src 2>/dev/null || ls <path>/
    find <path> -maxdepth 1 -type f \( -name "*.html" -o -name "*.vue" -o -name "*.jsx" -o -name "*.tsx" -o -name "*.js" -o -name "*.ts" -o -name "*.json" \) | head -20
    ```
-3. 检测框架和构建工具（检查 `package.json`、`index.html`、`vite.config.*` 等）
+3. 检测框架和构建工具（检查 `package.json`、`index.html`、`vite.config.*` 等），用于指导后续阶段的代码解析方式
 4. 根据项目规模选择模式：
    - **full**（默认）：完整 6 阶段分析
-   - **quick**：仅 P1 + P3 + P4 + P6（跳过模块测绘和业务映射）
+   - **quick**：仅 P1 + P2 + P3 + P5（跳过业务功能-API 映射）
 
 ---
 
-### 阶段 1：技术侦察
-
-**目标**：识别技术栈和整体架构
-
-**操作**：
-1. 读取 `package.json`（如果存在），记录依赖：
-   - 前端框架（React/Vue/Angular/Svelte/jQuery/原生）
-   - HTTP 客户端（axios/fetch/原生 XHR）
-   - 路由库（react-router/vue-router/angular-router）
-   - UI 组件库（Ant Design/Element UI/Material UI）
-   - 状态管理（Redux/Pinia/Vuex/Context）
-2. 检查构建配置（`vite.config.*` / `webpack.*` / `tsconfig.json`）
-3. 检查路由定义文件（`src/router/`、`src/routes/`、`App.tsx` 等）
-4. 检查鉴权相关代码（auth guard、interceptor、middleware）
-5. 扫描 `.env*` 或配置文件中的 API base URL
-
-**输出**：技术概览表格（框架、HTTP 客户端、路由、鉴权方式、构建工具、API 基础路径）
-
----
-
-### 阶段 2：功能模块测绘
+### 阶段 1：功能模块测绘
 
 **目标**：列出所有页面/功能模块及其访问权限
 
@@ -91,7 +71,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 
 ---
 
-### 阶段 3：界面输入元素枚举
+### 阶段 2：界面输入元素枚举
 
 **目标**：以文本形式完整描述每个页面的界面输入元素
 
@@ -99,7 +79,6 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 - 元素类型（input:text / input:password / select / textarea / button / checkbox 等）
 - `name` 属性
 - 绑定的处理函数或事件
-- 是否为潜在高危元素
 - 数据类型（如文件、凭据、URL 等）
 
 **操作**：
@@ -147,7 +126,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 
 ---
 
-### 阶段 4：HTTP 请求映射
+### 阶段 3：HTTP 请求映射
 
 **目标**：追踪所有后端 API 调用，建立每个参数到界面输入元素的映射
 
@@ -177,7 +156,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 
 ---
 
-### 阶段 5：业务功能-API 映射
+### 阶段 4：业务功能-API 映射
 
 **目标**：将 UI 操作、API 调用和业务含义串联
 
@@ -194,7 +173,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 
 ---
 
-### 阶段 6：功能与配置汇总
+### 阶段 5：功能与配置汇总
 
 **目标**：基于前 5 阶段的分析，汇总值得关注的功能点和配置项
 
@@ -226,13 +205,12 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
 > 分析模式：{full|quick}
 > 分析时间：{timestamp}
 
-## 1. 技术概览
-## 2. 功能模块地图（quick 模式可跳过）
-## 3. 界面输入元素清单
-## 4. API 端点与参数 → 输入元素映射
-## 5. 业务功能-API 映射（quick 模式可跳过）
-## 6. 功能与配置汇总
-## 7. 错误处理与输入约束
+## 1. 功能模块地图
+## 2. 界面输入元素清单
+## 3. API 端点与参数 → 输入元素映射
+## 4. 业务功能-API 映射（quick 模式可跳过）
+## 5. 功能与配置汇总
+## 6. 错误处理与输入约束
 ```
 
 ## 安全分析参考标准
