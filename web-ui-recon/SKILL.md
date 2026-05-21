@@ -88,42 +88,31 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
    - 对于 React：JSX 中的 `input`、`Select`、`Button` 等组件
    - 对于 Vue：template 中的表单元素
    - 对于 Ant Design / Element UI：`<Input>`、`<Select>` 等包装组件
-3. 使用简洁列表描述界面输入元素，用 `【可输入】` / `【可点击】` / `【只读】` 分组，**每个元素标注中文类型描述**：
+3. 用需求文档风格描述界面输入，用自然语言句子说明用户通过什么输入什么：
 
 ```
-【可输入】
-  - 用户名  [文本框]     name=username       必填
-  - 密码    [密码框]     name=password
-  - 记住我  [复选框]     name=remember
-  - 角色    [下拉框]     name=role           [异步: E3]
-  - 头像    [文件上传]   name=avatar         accept=image/*
-【可点击】
-  - 登录    [按钮]      type=submit
-  - 注册    [链接]      href=/register
+### 2.1 登录页面
+用户通过文本框输入用户名（必填）和密码进行身份认证。
+通过复选框选择「记住我」。
+通过下拉框选择用户角色，选项由 API 加载 [E3]。
+点击「登录」按钮提交表单，或点击「注册」链接跳转注册页面。
 ```
 
-中文类型对照表（前端 HTML 类型 → 中文描述）：
+中文类型对照表：
 
-| HTML 类型 | 中文描述 |
+| HTML 类型 | 描述用语 |
 |-----------|---------|
-| `input:text` | [文本框] |
-| `input:password` | [密码框] |
-| `input:checkbox` | [复选框] |
-| `input:radio` | [单选框] |
-| `input:file` | [文件上传] |
-| `input:number` | [数字框] |
-| `input:email` | [邮箱框] |
-| `input:url` | [URL框] |
-| `select` / `Select` | [下拉框] |
-| `textarea` / `Input.TextArea` | [文本域] |
-| `button` / `Button` | [按钮] |
-| `a` / `Link` | [链接] |
-| `input:hidden` | [隐藏域] |
+| `input:text`、`textarea` | 文本框、输入框、文本域 |
+| `input:password` | 密码框 |
+| `input:checkbox` | 复选框 |
+| `input:radio` | 单选框 |
+| `input:file` | 文件上传 |
+| `input:number` | 数字输入框 |
+| `select` | 下拉框 |
+| `button` | 按钮 |
+| `a` | 链接 |
 
-标注规则：
-- `【可输入】` — 文本框、密码框、下拉框、复选框等**用户可填写或选择**的元素
-- `【可点击】` — 按钮、链接等**用户可触发操作**的元素
-- `【只读】` — 纯展示文本、disabled 字段、不可交互元素
+每个页面至少一段话，覆盖所有输入元素和可执行操作。不需要每行一个元素，同类输入可以合并描述。
 
 4. 特别关注下拉框（`<select>`、`Select` 组件）的数据来源：
    - 如果 `options` 是硬编码的静态数据，标注为 `[静态选项]`
@@ -138,7 +127,7 @@ argument-hint: "<frontend-source-path> [--scope full|quick] [--output report.md]
    - **错误反馈方式**：标注错误是通过什么机制展示给用户的（Ant Design `message.error` / 行内校验提示 / `alert` / 自定义弹窗 / 静默失败）
    - **API 错误透传**：检查前端是否直接将后端错误信息展示给用户（如 `catch(error => message.error(error.response.data.message))`）
 
-**输出**：按页面组织的界面输入元素清单，包含简洁列表描述
+**输出**：按页面组织的界面输入元素描述（需求文档风格）
 
 ---
 
